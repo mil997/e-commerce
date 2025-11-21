@@ -1,33 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-//import '../styles/HomePage.css'; //falta crearste archivo 
+import '../styles/HomePage.css';
 
-const API_URL = 'http://localhost:3000/api'; 
+const API_URL = 'http://localhost:3000/api';
 
 function HomePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  //uso de estas funciones mientras de prueba
-  //falta CURRUSEL CON PRODUCTOS DE TEMPORADA
-  //falta VISTA DE PRODUCTOS MAS VENDIDOS/DESTACADOS
 
-  // Dentro del useEffect debe de estar todo el código para cargar los productos
   useEffect(() => {
     async function loadProducts() {
       try {
         const response = await axios.get(`${API_URL}/products`); 
         const data = response.data;
-        // Comprobamos el array
         let productArray = [];
         if (Array.isArray(data)) {
-            // Caso 1: El backend devuelve directamente el array
             productArray = data;
         } else if (data && Array.isArray(data.products)) {
-            // Caso 2: El backend envuelve el array
             productArray = data.products;
         } else {
-            // Caso 3: No es un array (error del backend, o base de datos vacía)
             console.warn("La API no devolvio un array. Datos recibidos:", data);
         }
 
@@ -35,16 +27,14 @@ function HomePage() {
         setLoading(false);
 
       } catch (err) {
-        // Muestra el error de conexión si el backend está apagado o falla
         console.error("Error al cargar productos:", err);
         setError("Error al obtener los datos de productos. Por favor, intenta más tarde.");
         setLoading(false);
       }
     }
     loadProducts();
-    
-  }, []); // El array vacio asegura que se ejecuta solo una vez al inicio
-  
+  }, []);
+
   if (loading) {
     return <h2>Cargando productos...</h2>;
   }
@@ -52,19 +42,85 @@ function HomePage() {
   if (error) {
     return <h2 style={{ color: 'red', textAlign: 'center' }}>{error}</h2>;
   }
-  
-  // Si no hay productos después de cargar (base de datos vacía)
-  if (products.length === 0) {
-      return <h2 style={{ textAlign: 'center' }}>No hay productos disponibles en la tienda.</h2>;
-  }
 
   return (
-    <div className="home-page">
-      <h1>Catálogo de Ropa</h1>
-      <div className="product-grid">
-        {products.map((product) => (
-          <ProductCard key={product._id} product={product} /> 
-        ))}
+    <div className="home-page" style={{ paddingTop: '0' }}>
+      {/* Carrusel que ocupa toda la pantalla */}
+      <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" style={{ marginTop: '0' }}>
+        <div className="carousel-inner">
+          <div className="carousel-item active">
+            <img 
+              className="d-block w-100" 
+              src="/images/img4.png" 
+              alt="First slide"
+              style={{ 
+                height: '100vh', 
+                objectFit: 'cover',
+                width: '100%'
+              }}
+            />
+          </div>
+          <div className="carousel-item">
+            <img 
+              className="d-block w-100" 
+              src="/images/img5.png" 
+              alt="Second slide"
+              style={{ 
+                height: '100vh', 
+                objectFit: 'cover',
+                width: '100%'
+              }}
+            />
+          </div>
+          <div className="carousel-item">
+            <img 
+              className="d-block w-100" 
+              src="/images/img3.png" 
+              alt="Third slide"
+              style={{ 
+                height: '100vh', 
+                objectFit: 'cover',
+                width: '100%'
+              }}
+            />
+          </div>
+          <div className="carousel-item">
+            <img 
+              className="d-block w-100" 
+              src="/images/img1.png" 
+              alt="Fourth slide"
+              style={{ 
+                height: '100vh', 
+                objectFit: 'cover',
+                width: '100%'
+              }}
+            />
+          </div>
+        </div>
+        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span className="visually-hidden">Previous</span>
+        </button>
+        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+          <span className="carousel-control-next-icon" aria-hidden="true"></span>
+          <span className="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      {/* Contenido de productos */}
+      <div className="container mt-5" style={{ paddingTop: '50px' }}>
+        <h1 className="text-center mb-4">Productos Destacados</h1>
+        {products.length === 0 ? (
+          <h2 style={{ textAlign: 'center' }}>No hay productos disponibles en la tienda.</h2>
+        ) : (
+          <div className="row">
+            {products.map((product) => (
+              <div key={product._id} className="col-lg-4 col-md-6 mb-4">
+                <ProductCard product={product} /> 
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
