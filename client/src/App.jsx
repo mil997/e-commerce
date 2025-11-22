@@ -2,29 +2,32 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage'; // importamos la página principal
-import Navbar from './components/Navbar'; 
-import RegisterPage from './pages/RegisterPage'; // se importa la página de registro
-import LoginPage from './pages/LoginPage';
-
+import HomePage from './pages/HomePage.jsx'; 
+import Navbar from './components/Navbar.jsx'; 
+import RegisterPage from './pages/RegisterPage.jsx'; 
+import LoginPage from './pages/LoginPage.jsx';
+import CartPage from './pages/CartPage.jsx';
+import ProductDetailPage from './pages/ProductDetailPage.jsx'; 
+import CataloguePage from './pages/CataloguePage.jsx'; 
 
 function App() {
   return (
-    // BrowserRouter permite la navegación
     <BrowserRouter>
       <Navbar /> 
-
       <Routes>
         <Route path="/" element={<HomePage />} /> 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} /> 
-    
-        {/* Rutas que faltan añadir */}        
-        <Route path="/products/:id" element={<h1>Informacion del Producto</h1>} />
-        <Route path="/cart" element={<h1>Carrito de Compras</h1>} />
+        
+        {/* RUTA DEL CATÁLOGO COMPLETO */}
+        <Route path="/catalogue" element={<CataloguePage />} /> {/* <-- NUEVA RUTA */}
+
+        <Route path="/products/:id" element={<ProductDetailPage />} /> 
+        <Route path="/cart" element={<CartPage />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> yoquienmas
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 import { Link } from "react-router-dom";
@@ -15,12 +19,31 @@ function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll);
+<<<<<<< HEAD
+=======
+=======
+import React from 'react';
+<<<<<<< HEAD
+import { Navbar as BsNavbar, Nav, Container, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/useAuth.jsx'; 
+import { useCart } from '../context/useCart.jsx'; 
+
+function Navbar() {
+    const { isAuthenticated, user, logout } = useAuth();
+    const { cart } = useCart();
+>>>>>>> d072c96e9424f77456a7fad24c55a8f7dd9ff67b
+>>>>>>> yoquienmas
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> yoquienmas
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     console.log("Buscar:", searchQuery);
@@ -56,7 +79,15 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
+<<<<<<< HEAD
               <Link className="nav-link" to="/">Productos</Link>
+=======
+              <Link className="nav-link" to="/">Home</Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/catalogue">Catálogo</Link>
+>>>>>>> yoquienmas
             </li>
 
                {/* Registro y LogIn */}
@@ -105,7 +136,11 @@ function Navbar() {
 
             {/* Carrito de compras */}
             <li className="nav-item">
+<<<<<<< HEAD
               <a className="nav-link shopping-bag" href="/carrito">
+=======
+              <a className="nav-link shopping-bag" href="/cart">
+>>>>>>> yoquienmas
                 <img 
                   src="/images/shopping_bag.png"
                   alt="Carrito de compras"
@@ -120,5 +155,82 @@ function Navbar() {
     </nav>
   );
 } 
+<<<<<<< HEAD
+=======
+=======
+                        {/* Estado de Autenticación */}
+                        {isAuthenticated ? (
+                            <>
+                                <Nav.Text className="text-info me-3">
+                                    Hola, **{user.username}**
+                                </Nav.Text>
+                                <Button variant="outline-danger" onClick={logout}>
+                                    Cerrar Sesión
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button 
+                                    as={Link} 
+                                    to="/login" 
+                                    variant="outline-success" 
+                                    className="me-2"
+                                >
+                                    Iniciar Sesión
+                                </Button>
+                                <Button as={Link} to="/register" variant="light">
+                                    Registrarse
+                                </Button>
+                            </>
+                        )}
+                    </Nav>
+                </BsNavbar.Collapse>
+            </Container>
+        </BsNavbar>
+=======
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/useAuth'; // Asumiendo esta ruta
+import { useCart } from "../context/useCart.jsx"; // Para mostrar ítems en el carrito
+
+function Navbar() {
+    const { isAuthenticated, user, logout } = useAuth(); // Autenticación
+    const { cart } = useCart(); // Carrito
+    
+    // Número total de ítems distintos en el carrito (para el icono)
+    const cartItemCount = cart ? cart.items.length : 0; 
+    
+    return (
+        <nav>
+            <Link to="/">
+                <h1>🛒 CODIGO NEGRO</h1>
+            </Link>
+
+            <div>
+                <Link to="/" style={{ marginRight: '15px' }}>Catálogo</Link>
+                
+                <Link to="/cart" style={{ marginRight: '15px' }}>
+                    Carrito ({cartItemCount})
+                </Link>
+
+                {isAuthenticated ? (
+                    <>
+                        <span style={{ marginRight: '15px' }}>Hola, **{user.username}**</span>
+                        <button onClick={logout} className="auth-btn">
+                            Cerrar Sesión
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login" style={{ marginRight: '15px' }}>Iniciar Sesión</Link>
+                        <Link to="/register">Registrarse</Link>
+                    </>
+                )}
+            </div>
+        </nav>
+>>>>>>> 65c0989fbe76a5a33a0a13bc71bf706dcb128665
+    );
+}
+>>>>>>> d072c96e9424f77456a7fad24c55a8f7dd9ff67b
+>>>>>>> yoquienmas
 
 export default Navbar;
