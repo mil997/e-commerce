@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/useAuth'; // Importa el hook personalizado
+import '../styles/Auth.css';
 
 function LoginPage() {
     // llamo al hook personalizado para poder acceder a la funcion login
@@ -38,43 +39,61 @@ function LoginPage() {
     };
 
     return (
-        <div className="form-container">
-            <h2>Iniciar Sesión</h2>
-            <form onSubmit={handleSubmit} className="auth-form">
-                {/* Muestra errores si existen */}
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
+        <div className="auth-container">
+            <div className="auth-card">                
+                <form onSubmit={handleSubmit}>
+                    {/* Mensaje de error */}
+                    {error && <div className="auth-error">{error}</div>}
+                    
+                    {/* Campo de email */}
+                    <div className="form-group">
+                        <label htmlFor="email">Correo electrónico</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            placeholder="tu@email.com"
+                        />
+                    </div>
+                    
+                    {/* Campo de contraseña */}
+                    <div className="form-group">
+                        <label htmlFor="password">Contraseña</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            placeholder="••••••••"
+                        />
+                    </div>
+                    
+                    {/* Botón de inicio de sesión */}
+                    <button type="submit" className="auth-button" disabled={loading}>
+                        {loading ? 'INICIANDO SESIÓN...' : 'INGRESAR'}
+                    </button>
+                </form>
+                {/* Link para olvide mi contraseña */}
+                <div className='auth-links'>
+                    <a href="/forgot-password" className="auth-link-main">
+                        OLVIDE MI CONTRASEÑA
+                    </a>
                 </div>
-                
-                <div>
-                    <label htmlFor="password">Contraseña</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
+                {/* Link para ir a registro */}
+                <div className="auth-links">
+                    <div className="auth-divider">
+                    <span>o bien</span>
                 </div>
-                
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Iniciando sesión...' : 'Ingresar'}
-                </button>
-            </form>
-
-            <p className="link-text">
-                ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
-            </p>
+                    <Link to="/register" className="auth-link-main">
+                        ¿No tienes cuenta? REGÍSTRATE AQUÍ
+                    </Link>
+                </div>
+            </div>
         </div>
     );
 }
