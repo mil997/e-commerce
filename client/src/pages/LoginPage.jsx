@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+<<<<<<< HEAD
 import { useAuth } from '../context/useAuth.jsx'; 
 // Importaciones de Bootstrap
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap'; 
@@ -7,6 +8,13 @@ import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 function LoginPage() {
 // llamo al hook personalizado para poder acceder a la funcion login
     const { login } = useAuth();
+=======
+import { useAuth } from '../context/useAuth'; // Importa el hook personalizado
+
+function LoginPage() {
+    // llamo al hook personalizado para poder acceder a la funcion login
+    const { login } = useAuth(); 
+>>>>>>> 65c0989fbe76a5a33a0a13bc71bf706dcb128665
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -39,6 +47,7 @@ function LoginPage() {
         }
     };
 
+<<<<<<< HEAD
    return (
         <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
             <Card style={{ width: '25rem' }} className="shadow-lg p-3">
@@ -87,6 +96,47 @@ function LoginPage() {
                 </Card.Footer>
             </Card>
         </Container>
+=======
+    return (
+        <div className="form-container">
+            <h2>Iniciar Sesión</h2>
+            <form onSubmit={handleSubmit} className="auth-form">
+                {/* Muestra errores si existen */}
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <div>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                
+                <div>
+                    <label htmlFor="password">Contraseña</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Iniciando sesión...' : 'Ingresar'}
+                </button>
+            </form>
+
+            <p className="link-text">
+                ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+            </p>
+        </div>
+>>>>>>> 65c0989fbe76a5a33a0a13bc71bf706dcb128665
     );
 }
 
