@@ -1,0 +1,235 @@
+/* Navbar transparente por defecto */
+.navbar-transparent {
+  background: transparent !important;
+  backdrop-filter: blur(0px);
+  transition: all 0.3s ease;
+  padding: 25px 0;
+  box-shadow: none !important;
+}
+
+/* Navbar con fondo cuando se hace scroll */
+.navbar-scrolled {
+  background: rgba(175, 174, 174, 0.466) !important;
+  backdrop-filter: blur(10px);
+  padding: 15px 0;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.795);
+  transition: all 0.3s ease;
+}
+
+/* Contenedor de la marca */
+.brand-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Título principal */
+.brand-title {
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 8px;
+  margin: 0;
+  color: rgb(0, 0, 0);
+  text-transform: uppercase;
+  font-family: 'Playfair Display', serif;
+  text-shadow: 2px 2px 8px rgb(170, 168, 168);
+  transition: all 0.3s ease;
+}
+
+/* Subtítulo */
+.brand-subtitle {
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 12px;
+  color: white;
+  text-transform: uppercase;
+  margin-top: -5px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+  transition: all 0.3s ease;
+}
+
+/* Enlaces de navegación */
+.navbar-nav .nav-link {
+  color: rgb(41, 40, 40) !important;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 0 10px;
+  padding: 10px 0 !important;
+  position: relative;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #8e8e8f !important;
+  transform: translateY(-2px);
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 50%;
+  background-color: #8e8e8f;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
+
+
+/* Estilos para la búsqueda */
+.search-container {
+  position: relative;
+}
+
+.search-toggle {
+  background: none;
+  border: none;
+  padding: 8px;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(0);
+  transition: all 0.3s ease;
+}
+
+.search-toggle:hover .search-icon {
+  filter: brightness(0) invert(0.5);
+}
+
+.search-form {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 10px;
+  min-width: 250px;
+  z-index: 1000;
+}
+
+.search-input {
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.search-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #666;
+  margin-left: 5px;
+}
+
+.search-close:hover {
+  color: #333;
+}
+
+/* Estilos del carrito de compras */
+.shopping-bag {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shopping-bag-image {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  filter: brightness(0) invert(0);
+}
+
+.navbar-nav .nav-link:hover .shopping-bag-image {
+  transform: scale(1.1);
+  filter: brightness(0) invert(0.5);
+}
+
+.shopping-bag-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Botón hamburguesa */
+.navbar-toggler {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 8px 12px;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler-icon {
+background-image: url('images/burguer_icon.png');
+background-size: contain;
+background-repeat: no-repeat;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+  }
+  
+  .search-form {
+    position: static;
+    margin-top: 10px;
+    min-width: auto;
+  }
+  
+  .brand-title {
+    font-size: 2.2rem;
+    letter-spacing: 6px;
+  }
+  
+  .brand-subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 8px;
+    color: #333;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .brand-title {
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+  }
+  
+  .brand-subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 6px;
+  }
+  
+  .navbar-transparent,
+  .navbar-scrolled {
+    padding: 15px 0;
+  }
+}
