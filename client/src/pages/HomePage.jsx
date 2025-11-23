@@ -1,38 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import ProductCard from '../components/ProductCard.jsx';
 import '../styles/HomePage.css';
 
 const API_URL = 'http://localhost:3000/api';
-
-// Define el componente ProductCard dentro del mismo archivo
-function ProductCard({ product }) {
-  return (
-    <div className="card h-100 shadow-sm">
-      <img 
-        src={product.image || '/images/placeholder.jpg'} 
-        className="card-img-top"
-        alt={product.name}
-        style={{ height: '250px', objectFit: 'cover' }}
-      />
-      <div className="card-body d-flex flex-column">
-        <h5 className="card-title">{product.name}</h5>
-        <p className="card-text flex-grow-1">
-          {product.description}
-        </p>
-        <p className="card-text fw-bold text-primary fs-5">
-          ${product.price}
-        </p>
-        <Link 
-          to={`/products/${product._id}`} 
-          className="btn btn-outline-secondary"
-        >
-          Ver Detalles
-        </Link>
-      </div>
-    </div>
-  );
-}
 
 function HomePage() {
   const [products, setProducts] = useState([]);
@@ -50,7 +21,7 @@ function HomePage() {
         } else if (data && Array.isArray(data.products)) {
             productArray = data.products;
         } else {
-            console.warn("La API no devolvió un array. Datos recibidos:", data);
+            console.warn("La API no devolvio un array. Datos recibidos:", data);
         }
 
         setProducts(productArray);
@@ -66,11 +37,11 @@ function HomePage() {
   }, []);
 
   if (loading) {
-    return <h2 className="text-center mt-5">Cargando productos...</h2>;
+    return <h2>Cargando productos...</h2>;
   }
 
   if (error) {
-    return <h2 className="text-center mt-5 text-danger">{error}</h2>;
+    return <h2 style={{ color: 'red', textAlign: 'center' }}>{error}</h2>;
   }
 
   return (
