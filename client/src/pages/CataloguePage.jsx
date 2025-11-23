@@ -5,13 +5,12 @@ import { useCart } from '../context/useCart';
 import { useAuth } from '../context/useAuth';
 import '../styles/CataloguePage.css';
 
-const API_URL = 'http://localhost:3000/api'; 
+const API_URL = 'http://localhost:3000/api';
 
 function ProductCard({ product }) {
   const { isAuthenticated } = useAuth();
   const { handleIncreaseQuantity } = useCart();
   const [quantity, setQuantity] = useState(1);
-
   const handleAddToCartClick = () => {
     if (!isAuthenticated) {
       alert("Debes iniciar sesión para añadir productos al carrito.");
@@ -20,7 +19,6 @@ function ProductCard({ product }) {
     handleIncreaseQuantity(product._id, quantity);
     alert(`¡${quantity}x ${product.name} añadido al carrito!`);
   };
-
   return (
     <div className="card h-100 shadow-sm product-card">
       <img 
@@ -41,7 +39,7 @@ function ProductCard({ product }) {
           <p className={`small mb-3 ${product.stock === 0 ? 'text-danger' : 'text-success'}`}>
             {product.stock === 0 ? 'Sin Stock' : `Stock: ${product.stock}`}
           </p>
-          
+
           {/* Selector de cantidad - solo muestra si hay stock */}
           {product.stock > 0 && (
             <div className="quantity-selector mb-3">
@@ -68,7 +66,7 @@ function ProductCard({ product }) {
             >
               Ver Detalles
             </Link>
-            
+
             {/* Botón Añadir al Carrito */}
             <button
               className="btn btn-primary"
@@ -83,14 +81,12 @@ function ProductCard({ product }) {
     </div>
   );
 }
-
 function CataloguePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
+   useEffect(() => {
     async function loadProducts() {
       try {
         const response = await axios.get(`${API_URL}/products`); 
@@ -113,9 +109,8 @@ function CataloguePage() {
 
   const filteredProducts = useMemo(() => {
     if (!searchTerm) return products;
-    
     const lowerCaseSearch = searchTerm.toLowerCase();
-    
+
     return products.filter(product =>
       product.name.toLowerCase().includes(lowerCaseSearch) ||
       (product.description && product.description.toLowerCase().includes(lowerCaseSearch))
@@ -125,21 +120,19 @@ function CataloguePage() {
   if (loading) {
     return <h2 className="text-center mt-5"> Cargando Catálogo...</h2>;
   }
-
-  if (error) {
+    if (error) {
     return <h2 className="text-center mt-5 text-danger">{error}</h2>;
   }
-  
+
   if (products.length === 0) {
     return <h2 className="text-center mt-5 text-secondary">No hay productos disponibles en la tienda.</h2>;
   }
-
   return (
     <div className="catalogue-page">
       <div className="container mt-5" style={{ paddingTop: '50px' }}>
-        
+
         <h1 className="text-center mb-4"> Catálogo Completo </h1>
-        
+
         {/* Barra de búsqueda */}
         <div className="row mb-4 justify-content-center">
           <div className="col-md-6">

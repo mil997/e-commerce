@@ -1,55 +1,10 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Button } from 'react-bootstrap';
-
-function HomePage() {
-  return (
-    <Container className="my-5">
-      {/* Jumbotron/Banner de Bienvenida */}
-      <div className="p-5 mb-4 bg-light rounded-3 text-center shadow-sm">
-        <h1 className="display-4">👋 ¡Bienvenido a CODIGO NEGRO!</h1>
-        <p className="lead">
-          Tu destino online para los mejores productos. Descubre nuestra colección completa o mira nuestras ofertas destacadas.
-        </p>
-        <hr className="my-4" />
-        <p>
-          Encuentra exactamente lo que estás buscando.
-        </p>
-        <Button 
-          as={Link} 
-          to="/catalogue" 
-          variant="primary" 
-          size="lg"
-        >
-          Explorar Catálogo Completo 🚀
-        </Button>
-      </div>
-
-      {/* Aquí podrías añadir un carrusel o productos destacados */}
-      <h2 className="text-center mt-5 mb-4">✨ Ofertas Destacadas del Mes</h2>
-      {/* ... (Aquí irían los componentes de productos destacados si los tuvieras) ... */}
-
-    </Container>
-  );
-=======
->>>>>>> d072c96e9424f77456a7fad24c55a8f7dd9ff67b
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
->>>>>>> yoquienmas
 import '../styles/HomePage.css';
 
 const API_URL = 'http://localhost:3000/api';
 
-<<<<<<< HEAD
-=======
 function ProductCard({ product }) {
   return (
     <div className="card h-100 shadow-sm">
@@ -68,7 +23,7 @@ function ProductCard({ product }) {
           ${product.price}
         </p>
         <Link 
-         
+
             as={Link} 
             to={`/products/${product._id}`} 
             variant="outline-secondary"
@@ -80,24 +35,22 @@ function ProductCard({ product }) {
   );
 }
 
->>>>>>> yoquienmas
 function HomePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
+   useEffect(() => {
     async function loadProducts() {
       try {
         const response = await axios.get(`${API_URL}/products`); 
         const data = response.data;
         let productArray = [];
         if (Array.isArray(data)) {
-            productArray = data;
+           productArray = data;
         } else if (data && Array.isArray(data.products)) {
-            productArray = data.products;
+          productArray = data.products;
         } else {
-            console.warn("La API no devolvio un array. Datos recibidos:", data);
+          console.warn("La API no devolvio un array. Datos recibidos:", data);
         }
 
         setProducts(productArray);
@@ -110,22 +63,14 @@ function HomePage() {
       }
     }
     loadProducts();
-  }, []);
+    }, []);
 
   if (loading) {
-<<<<<<< HEAD
-    return <h2>Cargando productos...</h2>;
-  }
-
-  if (error) {
-    return <h2 style={{ color: 'red', textAlign: 'center' }}>{error}</h2>;
-=======
     return <h2 className="text-center mt-5">Cargando productos...</h2>;
   }
 
   if (error) {
     return <h2 className="text-center mt-5 text-danger">{error}</h2>;
->>>>>>> yoquienmas
   }
 
   return (
@@ -191,7 +136,6 @@ function HomePage() {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-
       {/* Contenido de productos */}
       <div className="container mt-5" style={{ paddingTop: '50px' }}>
         <h1 className="text-center mb-4">Productos Destacados</h1>
@@ -205,19 +149,9 @@ function HomePage() {
               </div>
             ))}
           </div>
-        )}
+          )}
       </div>
     </div>
-<<<<<<< HEAD
-  );
-=======
-<<<<<<< HEAD
-  );
-=======
-    );
->>>>>>> 65c0989fbe76a5a33a0a13bc71bf706dcb128665
->>>>>>> d072c96e9424f77456a7fad24c55a8f7dd9ff67b
->>>>>>> yoquienmas
+     );
 }
-
 export default HomePage;

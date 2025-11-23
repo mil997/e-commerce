@@ -1,7 +1,6 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-
-import { AuthContext } from './AuthContext';
+import { AuthContext } from './AuthContext'; 
 
 const API_URL = 'http://localhost:3000/api';
 

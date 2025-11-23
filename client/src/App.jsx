@@ -4,12 +4,12 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage.jsx'; 
 import Navbar from './components/Navbar.jsx'; 
+import Footer from './components/Footer.jsx';
 import RegisterPage from './pages/RegisterPage.jsx'; 
 import LoginPage from './pages/LoginPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 import ProductDetailPage from './pages/ProductDetailPage.jsx'; 
 import CataloguePage from './pages/CataloguePage.jsx'; 
-
 function App() {
   return (
     <BrowserRouter>
@@ -18,16 +18,16 @@ function App() {
         <Route path="/" element={<HomePage />} /> 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} /> 
-        
-        {/* RUTA DEL CATÁLOGO COMPLETO */}
+      {/* RUTA DEL CATÁLOGO COMPLETO */}
         <Route path="/catalogue" element={<CataloguePage />} /> {/* <-- NUEVA RUTA */}
 
         <Route path="/products/:id" element={<ProductDetailPage />} /> 
         <Route path="/cart" element={<CartPage />} />
-      </Routes>
+        <Route path="/cart" element={<h1>Carrito de Compras</h1>} /> {/* O CartPage */}
+        </Routes>
+        <Footer />
     </BrowserRouter>
   );
 }
-
 export default App;
 

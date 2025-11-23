@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/useCart.jsx';
+import { useCart } from '../context/useCart.jsx'; 
 import '../styles/CartPage.css';
 
 function CartPage() {
@@ -12,12 +12,13 @@ function CartPage() {
     isLoading, 
     isAuthenticated
   } = useCart();
-
+  
   const handleDecreaseQuantity = (productId, currentQuantity) => {
     if (currentQuantity === 1) {
-      handleRemoveItem(productId);
+      handleRemoveItem(productId); 
     } else {
-      alert('Funcionalidad de decrementar pendiente — requiere endpoint PUT en backend.');
+      // Para decrementar necesitarías implementar esta función en tu context
+      console.log('Decrementar producto:', productId);
     }
   };
 
@@ -36,7 +37,7 @@ function CartPage() {
     );
   }
 
-  if (!cart.items || cart.items.length === 0) {
+  if (cart.items.length === 0) {
     return (
       <div className="container mt-5 text-center">
         <h2 className="text-secondary mb-4">Carrito Vacío</h2>
@@ -53,13 +54,12 @@ function CartPage() {
         
         <div className="row">
           
-          {/* Columna izquierda: productos */}
+          {/* Columna de productos */}
           <div className="col-lg-8">
             <div className="card shadow-sm mb-4">
               <div className="card-header bg-dark text-white">
                 <h5 className="mb-0">Productos en tu Carrito</h5>
               </div>
-
               <div className="card-body p-0">
                 <div className="table-responsive">
                   <table className="table table-hover mb-0">
@@ -91,22 +91,18 @@ function CartPage() {
                               </div>
                             </div>
                           </td>
-
                           <td>${item.product.price?.toFixed(2) || '0.00'}</td>
-
                           <td className="text-center">
-                            <div className="btn-group">
+                            <div className="btn-group" role="group">
                               <button 
                                 className="btn btn-outline-secondary btn-sm"
                                 onClick={() => handleDecreaseQuantity(item.product._id, item.quantity)}
                               >
                                 -
                               </button>
-
                               <span className="btn btn-light btn-sm disabled">
                                 {item.quantity}
                               </span>
-
                               <button 
                                 className="btn btn-outline-secondary btn-sm"
                                 onClick={() => handleIncreaseQuantity(item.product._id, 1)}
@@ -115,9 +111,7 @@ function CartPage() {
                               </button>
                             </div>
                           </td>
-
                           <td>${((item.product.price || 0) * item.quantity).toFixed(2)}</td>
-
                           <td>
                             <button 
                               className="btn btn-outline-danger btn-sm"
@@ -144,40 +138,38 @@ function CartPage() {
             </div>
           </div>
           
-          {/* Columna derecha: resumen */}
+          {/* Columna de resumen */}
           <div className="col-lg-4">
             <div className="card shadow-sm sticky-top" style={{ top: '6rem' }}>
               <div className="card-header bg-primary text-white">
-                <h5 className="mb-0">Resumen del Pedido</h5>
+                <h5 className="mb-0"> Resumen del Pedido</h5>
               </div>
-
               <div className="list-group list-group-flush">
                 <div className="list-group-item d-flex justify-content-between">
                   <span>Subtotal:</span>
                   <strong>${cart.total?.toFixed(2) || '0.00'}</strong>
                 </div>
-
+                <div className="list-group-item d-flex justify-content-between">
+                  <span>Envío:</span>
+                  <span className="text-success">Gratis</span>
+                </div>
                 <div className="list-group-item d-flex justify-content-between bg-light">
                   <strong>Total:</strong>
                   <strong className="text-primary">${cart.total?.toFixed(2) || '0.00'}</strong>
                 </div>
               </div>
-
               <div className="card-body">
                 <div className="d-grid gap-2">
                   <button className="btn btn-success btn-lg">
                     Proceder al Pago
                   </button>
-
                   <Link to="/catalogue" className="btn btn-outline-primary">
                     ← Seguir Comprando
                   </Link>
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </div>
