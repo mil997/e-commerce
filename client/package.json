@@ -11,19 +11,6 @@
   },
   "dependencies": {
     "axios": "^1.13.2",
-<<<<<<< HEAD
-    "bootstrap": "^5.3.8",
-    "react": "^19.2.0",
-    "react-bootstrap": "^2.10.10",
-=======
-<<<<<<< HEAD
-    "bootstrap": "^5.3.8",
-    "react": "^19.2.0",
-    "react-bootstrap": "^2.10.10",
-=======
-    "react": "^19.2.0",
->>>>>>> 65c0989fbe76a5a33a0a13bc71bf706dcb128665
->>>>>>> d072c96e9424f77456a7fad24c55a8f7dd9ff67b
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.6"
   },

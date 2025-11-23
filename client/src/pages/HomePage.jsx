@@ -1,41 +1,3 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Button } from 'react-bootstrap';
-
-function HomePage() {
-  return (
-    <Container className="my-5">
-      {/* Jumbotron/Banner de Bienvenida */}
-      <div className="p-5 mb-4 bg-light rounded-3 text-center shadow-sm">
-        <h1 className="display-4">👋 ¡Bienvenido a CODIGO NEGRO!</h1>
-        <p className="lead">
-          Tu destino online para los mejores productos. Descubre nuestra colección completa o mira nuestras ofertas destacadas.
-        </p>
-        <hr className="my-4" />
-        <p>
-          Encuentra exactamente lo que estás buscando.
-        </p>
-        <Button 
-          as={Link} 
-          to="/catalogue" 
-          variant="primary" 
-          size="lg"
-        >
-          Explorar Catálogo Completo 🚀
-        </Button>
-      </div>
-
-      {/* Aquí podrías añadir un carrusel o productos destacados */}
-      <h2 className="text-center mt-5 mb-4">✨ Ofertas Destacadas del Mes</h2>
-      {/* ... (Aquí irían los componentes de productos destacados si los tuvieras) ... */}
-
-    </Container>
-  );
-=======
->>>>>>> d072c96e9424f77456a7fad24c55a8f7dd9ff67b
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -43,6 +5,7 @@ import '../styles/HomePage.css';
 
 const API_URL = 'http://localhost:3000/api';
 
+// Define el componente ProductCard dentro del mismo archivo
 function ProductCard({ product }) {
   return (
     <div className="card h-100 shadow-sm">
@@ -61,12 +24,10 @@ function ProductCard({ product }) {
           ${product.price}
         </p>
         <Link 
-         
-            as={Link} 
-            to={`/products/${product._id}`} 
-            variant="outline-secondary"
+          to={`/products/${product._id}`} 
+          className="btn btn-outline-secondary"
         >
-            Ver Detalles
+          Ver Detalles
         </Link>
       </div>
     </div>
@@ -89,7 +50,7 @@ function HomePage() {
         } else if (data && Array.isArray(data.products)) {
             productArray = data.products;
         } else {
-            console.warn("La API no devolvio un array. Datos recibidos:", data);
+            console.warn("La API no devolvió un array. Datos recibidos:", data);
         }
 
         setProducts(productArray);
@@ -192,12 +153,7 @@ function HomePage() {
         )}
       </div>
     </div>
-<<<<<<< HEAD
   );
-=======
-    );
->>>>>>> 65c0989fbe76a5a33a0a13bc71bf706dcb128665
->>>>>>> d072c96e9424f77456a7fad24c55a8f7dd9ff67b
 }
 
 export default HomePage;
