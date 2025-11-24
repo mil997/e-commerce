@@ -44,9 +44,10 @@ function Footer() {
             <div className="col-lg-3 col-md-6 mb-4">
               <h5 className="footer-title">Prometemos</h5>
               <ul className="footer-list">
-                <li>Devoluciones gratuitas</li>
-                <li>Politca de 3 dias de espera para devolucion</li>
+                <li>Devoluciones gratuitas en las primeras 24hs</li>
+                <li>Política de 3 días de espera para devolución</li>
                 <li>Opciones de pago flexibles</li>
+                <li>Envíos a todo el país</li>
               </ul>
 
               {/* Redes Sociales */}

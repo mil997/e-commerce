@@ -15,6 +15,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar /> 
+      <main className="main-content">
       <Routes>
         <Route path="/" element={<HomePage />} /> 
         <Route path="/register" element={<RegisterPage />} />
@@ -25,10 +26,11 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         {/* Si necesitas una página de contacto, añádela: */}
         {/* <Route path="/contact" element={<ContactPage />} /> */}
-        
         {/* Ruta para manejar páginas no encontradas */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </main>
+      <Footer />
     </BrowserRouter>
   );
 }
