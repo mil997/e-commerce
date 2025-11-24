@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ProductCard from '../components/ProductCard.jsx';
 import '../styles/HomePage.css';
 
 const API_URL = 'http://localhost:3000/api';
-
 function HomePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
+   useEffect(() => {
     async function loadProducts() {
       try {
         const response = await axios.get(`${API_URL}/products`); 
         const data = response.data;
         let productArray = [];
         if (Array.isArray(data)) {
-            productArray = data;
+           productArray = data;
         } else if (data && Array.isArray(data.products)) {
-            productArray = data.products;
+          productArray = data.products;
         } else {
-            console.warn("La API no devolvio un array. Datos recibidos:", data);
+          console.warn("La API no devolvio un array. Datos recibidos:", data);
         }
 
         setProducts(productArray);
@@ -33,7 +32,7 @@ function HomePage() {
       }
     }
     loadProducts();
-  }, []);
+    }, []);
 
   if (loading) {
     return <h2>Cargando productos...</h2>;
@@ -106,7 +105,6 @@ function HomePage() {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-
       {/* Contenido de productos */}
       <div className="container mt-5" style={{ paddingTop: '50px' }}>
         <h1 className="text-center mb-4">Productos Destacados</h1>
@@ -120,10 +118,9 @@ function HomePage() {
               </div>
             ))}
           </div>
-        )}
+          )}
       </div>
     </div>
-  );
+     );
 }
-
 export default HomePage;

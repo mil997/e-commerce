@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 import { Link } from "react-router-dom";
 
-
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
@@ -32,12 +31,12 @@ function Navbar() {
     <nav className={`navbar navbar-expand-lg navbar-dark fixed-top ${scrolled ? 'navbar-scrolled' : 'navbar-transparent'}`}>
       <div className="container">
         {/* Nombre de la marca */}
-        <a className="navbar-brand" href="/">
+        <Link className="navbar-brand" to="/">
           <div className="brand-container">
             <h1 className="brand-title">CODIGO NEGRO</h1>
             <div className="brand-subtitle">Coleccion V26</div>
           </div>
-        </a>
+        </Link>
 
         {/* Botón hamburguesa para celulares */}
         <button 
@@ -56,15 +55,15 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
-              <Link className="nav-link" to="/">Productos</Link>
+              <Link className="nav-link" to="/catalogue">Catálogo</Link>
             </li>
 
-               {/* Registro y LogIn */}
+            {/* Registro y LogIn */}
             <li className="nav-item">
-              <Link className="nav-link" to="/Register">Registrarse</Link>
+              <Link className="nav-link" to="/register">Registrarse</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/Login">Login</Link>
+              <Link className="nav-link" to="/login">Login</Link>
             </li>
             
             {/* Barra de búsqueda*/}
@@ -105,14 +104,17 @@ function Navbar() {
 
             {/* Carrito de compras */}
             <li className="nav-item">
-              <a className="nav-link shopping-bag" href="/carrito">
+              <Link className="nav-link shopping-bag" to="/cart">
                 <img 
                   src="/images/shopping_bag.png"
                   alt="Carrito de compras"
                   className="shopping-bag-image"
                 />
                 <span className="shopping-bag-count">0</span>
-              </a>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/contact">Contacto</Link>
             </li>
           </ul>
         </div>
