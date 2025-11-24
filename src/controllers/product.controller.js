@@ -1,4 +1,4 @@
-import Product from "../models/product.model.js";
+import Product from "../models/product.model.js"; // importo el modelo de product, asi se guarda en mongoDB
 
 // obtener todos los productos
 export const getProducts = async (req, res) => {

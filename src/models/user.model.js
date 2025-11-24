@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({   // basicamente le digo a mongoDB como quiero que guarde los datos
     username: {
         type: String,
         required: true,

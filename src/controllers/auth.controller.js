@@ -1,22 +1,21 @@
-// importa el modelo de usuario de la base de datos (generalmente Mongoose).
+// importo el modelo de usuario de mongoose
 import User from '../models/user.model.js';
-// importa la librería para el cifrado y comparación de contraseñas.
+// importo bcrypt
 import bcrypt from 'bcryptjs';
-// importa la función auxiliar para generar un JSON Web Token (JWT).
+// importa la función auxiliar para generar un (jwt)
 import { createAccessToken } from '../libs/jwt.js';
-
 
 // registro de usuario
 
-// función de controlador para el registro de nuevos usuarios (ruta POST /register).
+// función de controlador para el registro de nuevos usuarios (ruta POST /register)
 export const register = async (req, res) => {
-    // desestructura los datos necesarios del cuerpo de la solicitud (req.body).
+    // recibo los datos necesarios del (req.body)
     const { username, email, password } = req.body;
     try {
-        // cifra la contraseña utilizando bcrypt. El '10' es el factor de complejidad (salt rounds).
+        // cifro la contraseña utilizando bcrypt. El '10' es el factor de complejidad (salt rounds)
         const passwordHash = await bcrypt.hash(password, 10);
 
-        // crea una nueva instancia del modelo User con los datos recibidos y la contraseña cifrada.
+        // creo un nuevo usuario con los datos recibidos y la contraseña cifrada.
         const newUser = new User({
             username,
             email,
@@ -30,7 +29,7 @@ export const register = async (req, res) => {
 
         // establece el token jwt como una cookie en el navegador del cliente
         res.cookie('token', token);
-        // responde con el id, nombre de usuario y email del usuario registrado (sin la contraseña)
+        // responde con el id, nombre de usuario y email del usuario registrado, no necesito la contraseña.
         res.json({
             id: userSaved._id,
             username: userSaved.username,
@@ -46,15 +45,15 @@ export const register = async (req, res) => {
 
 // función de controlador para el inicio de sesión de usuarios existentes (ruta post /login)
 export const login = async (req, res) => {
-    // desestructura el email y la contraseña del cuerpo de la solicitud
+    // recibo los datos necesarios del (req.body)
     const { email, password } = req.body;
     try {
-        // busca un usuario en la base de datos por el email proporcionado
+        // busca un usuario en la base de datos por el email
         const userfound = await User.findOne({ email });
         // si no se encuentra el usuario, devuelve un error 400 (Solicitud Incorrecta)
         if (!userfound) return res.status(400).json({ message: "usuario no encontrado" });
 
-        // compara la contraseña proporcionada con la contraseña cifrada almacenada en la base de datos
+        // compara la contraseña con la contraseña cifrada que se guardo en la base de datos
         const isMatch = await bcrypt.compare(password, userfound.password);
         // si las contraseñas no coinciden, devuelve un error 400
         if (!isMatch) return res.status(400).json({ message: "contraseña incorrecta" });
@@ -80,9 +79,9 @@ export const login = async (req, res) => {
 
 // función de controlador para obtener los datos del perfil del usuario autenticado (ruta get /profile)
 export const profile = async (req, res) => {
-    // busca el usuario en la base de datos usando el id adjunto a 'req.user' por el middleware 'authRequired'
+    // busca el usuario en la base de datos usando el id que da el 'req.user' por el middleware 'authRequired'
     const userfound = await User.findById(req.user.id);
-    // si por alguna razón el usuario no se encuentra (a pesar de tener un token válido), devuelve 400.
+    // si no encuentra el usuario (a pesar de tener un token valido), devuelve 400.
     if (!userfound) return res.status(400).json({ message: "usuario no encontrado" });
 
     // devuelve la información del perfil del usuario
@@ -93,11 +92,11 @@ export const profile = async (req, res) => {
     });
 };
 
-// para el cierre de sesión
+// cierre de sesión
 
 // función de controlador para cerrar la sesión (ruta post /logout)
 export const logout = (req, res) => {
-    // borra la cookie del token estableciéndola como vacía y con una fecha de expiración en el pasado (epoch 0)
+    // borra la cookie del token queda (vacia) y elimina la fecha de expiracion
     res.cookie('token', "", { expires: new Date(0) });
     // responde con un estado 200 (OK), indicando que la operación se completo con éxito.
     return res.sendStatus(200);

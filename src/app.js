@@ -10,7 +10,7 @@ import authRoutes from "./routes/auth.routes.js";
 const app = express();
 
 app.use(cors({
-            origin: 'http://localhost:5173',
+            origin: 'http://localhost:5173', // configure cors para que solo se use en este puerto que es el front
             credentials: true,
 }));
 app.use(morgan('dev'));

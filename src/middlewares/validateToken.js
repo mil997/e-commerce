@@ -19,14 +19,15 @@ export const authRequired = (req, res, next) => {
     // 2. pasa la clave secreta para descifrarlo.
     // 3. pasa una función de callback para manejar el resultado de la verificación.
     jwt.verify(token, TOKEN_SECRET, (error, user) => {
-// si ocurre un error durante la verificación (ej: token expirado, firma incorrecta),  devuelve una respuesta con estado 403 (Prohibido) y un mensaje de token inválido.
+    // si ocurre un error durante la verificación (ej: token expirado, firma incorrecta),  
+    // devuelve una respuesta con estado 403 (Prohibido) y un mensaje de token inválido.
         if (error) return res.status(403).json({ message: "token inválido" });
 
         // si la verificación llega a ser exitosa, los datos decodificados del token (el 'payload', aquí llamado 'user')
-// se adjuntan al objeto de solicitud (req). Esto hace que la información del usuario este disponible para las siguientes funciones (middlewares o controladores de ruta).
+        // se juntan con el objeto de solicitud (req). hace que la información del usuario este disponible para las siguientes funciones (middlewares o controladores de ruta).
         req.user = {
             id: user.id,
-            // aca se guarda el rol: Se extrae y se guarda el rol del usuario para usarlo en middlewares posteriores (como 'isAdmin').
+            // aca se guarda el rol: se extrae y se guarda el rol del usuario para usarlo en middlewares posteriores (como 'isAdmin').
             role: user.role
         };
         

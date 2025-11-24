@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { authRequired } from "../middlewares/validateToken.js";
+import { Router } from "express"; //importo el enrutador de express para hacer peticiones
+import { authRequired } from "../middlewares/validateToken.js"; // importo el auth para validar si esta autorizado o no
 import { getProducts, getProduct, createProduct, updateProduct, deleteProduct, } from "../controllers/product.controller.js";
 
 const router = Router();

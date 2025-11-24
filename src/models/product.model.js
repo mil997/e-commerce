@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema(
+const productSchema = new mongoose.Schema(   // basicamente le digo a mongoDB como quiero que guarde los datos
   {
     name: {
       type: String,

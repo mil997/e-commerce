@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const cartSchema = new mongoose.Schema({
+const cartSchema = new mongoose.Schema({ // basicamente le digo a mongoDB como quiero que guarde los datos
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
