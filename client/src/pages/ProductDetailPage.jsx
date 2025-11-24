@@ -5,12 +5,10 @@ import { useCart } from '../context/useCart';
 import { useAuth } from '../context/useAuth';
 import '../styles/ProductDetail.css';
 
-
 const API_URL = 'http://localhost:3000/api';
 
 function ProductDetailPage() {
     const { id } = useParams();
-
     const { isAuthenticated } = useAuth();
     const { handleIncreaseQuantity } = useCart();
     

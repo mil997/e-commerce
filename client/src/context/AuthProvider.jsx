@@ -1,53 +1,80 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AuthContext } from './AuthContext'; 
+import { AuthContext } from './AuthContext';
 
-const API_URL = 'http://localhost:3000/api';
-
+// Proveedor
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
         const token = localStorage.getItem('token');
-        if (token) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            return { token: token, username: 'UsuarioTemporal' };
+        if (!token) {
+          setIsLoading(false);
+          return;
         }
-        return null;
-    });
 
-    const [loading] = useState(false);
-
-    const login = async ({ email, password }) => {
-        try {
-            const response = await axios.post(`${API_URL}/auth/login`, { email, password });
-            const { token, user } = response.data;
-
-            localStorage.setItem('token', token);
-            setUser(user);
-
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            return user;
-
-        } catch (error) {
-            console.error('Login fallido:', error.response?.data?.message || error.message);
-            throw error;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        const response = await axios.get('http://localhost:3000/api/auth/profile');
+        
+        if (response.data) {
+          setIsAuthenticated(true);
+          setUser(response.data);
         }
+      } catch (error) {
+        // Error 401 es normal - usuario no autenticado
+        if (error.response?.status === 401) {
+          localStorage.removeItem('token');
+          delete axios.defaults.headers.common['Authorization'];
+        }
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
-        delete axios.defaults.headers.common['Authorization'];
-    };
+    checkLogin();
+  }, []);
 
-    return (
-        <AuthContext.Provider value={{
-            user,
-            loading,
-            isLoggedIn: !!user,
-            login,
-            logout
-        }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const login = async (credentials) => {
+  try {
+    const response = await axios.post('http://localhost:3000/api/auth/login', credentials);
+    const { token, user } = response.data;
+    
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    
+    setIsAuthenticated(true);
+    setUser(user);
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error en login:', error);
+    throw new Error('Error al iniciar sesión: ' + (error.response?.data?.message || error.message));
+  }
+};
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
+    setIsAuthenticated(false);
+    setUser(null);
+  };
+
+  const value = {
+    isAuthenticated,
+    user,
+    isLoading,
+    login,
+    logout
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
