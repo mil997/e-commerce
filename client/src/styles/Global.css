@@ -1,0 +1,20 @@
+.navbar-transparent {
+  background-color: transparent !important;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-scrolled {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  backdrop-filter: blur(10px);
+}
+
+.carousel-fullscreen {
+  margin-top: 0 !important;
+}
+
+/* Smooth transitions */
+.product-card,
+.btn,
+.navbar {
+  transition: all 0.3s ease;
+}

@@ -1,0 +1,12 @@
+.navbar-transparent {
+  background-color: transparent !important;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-scrolled {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.carousel-fullscreen {
+  margin-top: 0 !important;
+}
