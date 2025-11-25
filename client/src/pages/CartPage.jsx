@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/useCart.jsx'; 
 import '../styles/CartPage.css';
 
@@ -12,13 +12,23 @@ function CartPage() {
     isLoading, 
     isAuthenticated
   } = useCart();
+
+  const navigate = useNavigate();
   
-  const handleDecreaseQuantity = (productId, currentQuantity) => {
+  const handleDecreaseQuantity = async (productId, currentQuantity) => {
     if (currentQuantity === 1) {
       handleRemoveItem(productId); 
     } else {
-      // Para decrementar necesitarías implementar esta función en tu context
-      console.log('Decrementar producto:', productId);
+      // Para decrementar, usamos handleIncreaseQuantity con cantidad negativa
+      await handleIncreaseQuantity(productId, -1);
+    }
+  };
+
+  const handleProceedToCheckout = () => {
+    if (cart.items && cart.items.length > 0) {
+      navigate('/checkout');
+    } else {
+      alert('Tu carrito está vacío');
     }
   };
 
@@ -37,7 +47,8 @@ function CartPage() {
     );
   }
 
-  if (cart.items.length === 0) {
+  // Verificar si cart.items existe y tiene elementos
+  if (!cart.items || cart.items.length === 0) {
     return (
       <div className="container text-center cart-container-fix">
         <h2 className="text-secondary mb-4">Carrito Vacío</h2>
@@ -74,29 +85,33 @@ function CartPage() {
                     </thead>
                     <tbody>
                       {cart.items.map(item => (
-                        <tr key={item.product._id}>
+                        <tr key={item.product?._id || item._id}>
                           <td>
                             <div className="d-flex align-items-center">
                               <img 
-                                src={item.product.image || '/images/placeholder.jpg'} 
-                                alt={item.product.name}
+                                src={item.product?.image || item.image || '/images/placeholder.jpg'} 
+                                alt={item.product?.name || item.name}
                                 className="me-3"
                                 style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                                onError={(e) => {
+                                  e.target.src = '/images/placeholder.jpg';
+                                }}
                               />
                               <div>
-                                <strong>{item.product.name}</strong>
-                                {item.product.stock < 5 && item.product.stock > 0 && (
+                                <strong>{item.product?.name || item.name}</strong>
+                                {item.product?.stock < 5 && item.product?.stock > 0 && (
                                   <small className="text-warning d-block">Poco stock</small>
                                 )}
                               </div>
                             </div>
                           </td>
-                          <td>${item.product.price?.toFixed(2) || '0.00'}</td>
+                          <td>${(item.product?.price || item.price || 0).toFixed(2)}</td>
                           <td className="text-center">
                             <div className="btn-group" role="group">
                               <button 
                                 className="btn btn-outline-secondary btn-sm"
-                                onClick={() => handleDecreaseQuantity(item.product._id, item.quantity)}
+                                onClick={() => handleDecreaseQuantity(item.product?._id || item._id, item.quantity)}
+                                disabled={isLoading}
                               >
                                 -
                               </button>
@@ -105,18 +120,19 @@ function CartPage() {
                               </span>
                               <button 
                                 className="btn btn-outline-secondary btn-sm"
-                                onClick={() => handleIncreaseQuantity(item.product._id, 1)}
+                                onClick={() => handleIncreaseQuantity(item.product?._id || item._id, 1)}
+                                disabled={isLoading}
                               >
                                 +
                               </button>
                             </div>
                           </td>
-                          <td>${((item.product.price || 0) * item.quantity).toFixed(2)}</td>
+                          <td>${((item.product?.price || item.price || 0) * item.quantity).toFixed(2)}</td>
                           <td>
                             <button 
                               className="btn btn-outline-danger btn-sm"
-                              onClick={() => handleRemoveItem(item.product._id)}
-                              disabled={!item.product}
+                              onClick={() => handleRemoveItem(item.product?._id || item._id)}
+                              disabled={isLoading || !item.product}
                             >
                               Eliminar
                             </button>
@@ -133,8 +149,9 @@ function CartPage() {
               <button 
                 className="btn btn-warning"
                 onClick={handleClearCart}
+                disabled={isLoading || cart.items.length === 0}
               >
-                Vaciar Carrito
+                {isLoading ? 'Procesando...' : 'Vaciar Carrito'}
               </button>
             </div>
           </div>
@@ -143,26 +160,34 @@ function CartPage() {
           <div className="col-lg-4">
             <div className="card shadow-sm sticky-top" style={{ top: '6rem' }}>
               <div className="card-header bg-primary text-white">
-                <h5 className="mb-0"> Resumen del Pedido</h5>
+                <h5 className="mb-0">Resumen del Pedido</h5>
               </div>
               <div className="list-group list-group-flush">
                 <div className="list-group-item d-flex justify-content-between">
                   <span>Subtotal:</span>
-                  <strong>${cart.total?.toFixed(2) || '0.00'}</strong>
+                  <strong>${(cart.total || 0).toFixed(2)}</strong>
                 </div>
                 <div className="list-group-item d-flex justify-content-between">
                   <span>Envío:</span>
                   <span className="text-success">Gratis</span>
                 </div>
+                <div className="list-group-item d-flex justify-content-between">
+                  <span>Items:</span>
+                  <span>{cart.items?.length || 0}</span>
+                </div>
                 <div className="list-group-item d-flex justify-content-between bg-light">
                   <strong>Total:</strong>
-                  <strong className="text-primary">${cart.total?.toFixed(2) || '0.00'}</strong>
+                  <strong className="text-primary">${(cart.total || 0).toFixed(2)}</strong>
                 </div>
               </div>
               <div className="card-body">
                 <div className="d-grid gap-2">
-                  <button className="btn btn-success btn-lg">
-                    Proceder al Pago
+                  <button 
+                    className="btn btn-success btn-lg"
+                    onClick={handleProceedToCheckout}
+                    disabled={isLoading || cart.items.length === 0}
+                  >
+                    {isLoading ? 'Procesando...' : 'Proceder al Pago'}
                   </button>
                   <Link to="/catalogue" className="btn btn-outline-primary">
                     ← Seguir Comprando

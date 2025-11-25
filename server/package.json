@@ -24,7 +24,7 @@
     "mongoose": "^8.19.2",
     "morgan": "^1.10.1",
     "react-router-dom": "^7.9.5",
-    "zod": "^4.1.12"
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

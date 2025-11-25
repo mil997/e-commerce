@@ -1,4 +1,4 @@
 import { createContext } from 'react';
 
-// Creamos y exportamos el contexto (¡solo esto!)
+// Solo el contexto
 export const CartContext = createContext();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/useAuth'; // Importa el hook personalizado
+import { useAuth } from '../context/useAuth.jsx'; // Importa el hook personalizado
 import '../styles/Auth.css';
 
 function LoginPage() {

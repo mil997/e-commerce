@@ -1,60 +1,62 @@
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
 import mongoose from 'mongoose';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Define el schema aquí mismo temporalmente
+// Definición del schema
 const contactSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true
+    name: { 
+        type: String, 
+        required: true, 
+        trim: true 
     },
-    email: {
-        type: String,
-        required: true,
-        trim: true,
-        lowercase: true
+    email: { 
+        type: String, 
+        required: true, 
+        trim: true, 
+        lowercase: true 
     },
-    phone: {
-        type: String,
-        trim: true
+    phone: { 
+        type: String, 
+        trim: true 
     },
-    subject: {
-        type: String,
-        required: true,
-        trim: true
+    subject: { 
+        type: String, 
+        required: true, 
+        trim: true 
     },
-    message: {
-        type: String,
-        required: true
+    message: { 
+        type: String, 
+        required: true 
     },
-    status: {
-        type: String,
-        enum: ['unread', 'read', 'replied'],
-        default: 'unread'
+    status: { 
+        type: String, 
+        enum: ['unread', 'read', 'replied'], 
+        default: 'unread' 
     }
-}, {
-    timestamps: true
+}, { 
+    timestamps: true 
 });
 
-const Contact = mongoose.model('Contact', contactSchema);
+// Crear el modelo
+const Contact = mongoose.models.Contact || mongoose.model('Contact', contactSchema);
 
 // 📤 Enviar mensaje de contacto
 export const submitContact = async (req, res) => {
     try {
         const { name, email, phone, subject, message } = req.body;
 
+        // Validación básica
+        if (!name || !email || !subject || !message) {
+            return res.status(400).json({
+                message: "Todos los campos obligatorios deben ser completados"
+            });
+        }
+
         // Crear nuevo mensaje de contacto
         const newContact = new Contact({
             name,
             email,
-            phone,
+            phone: phone || '',
             subject,
-            message,
-            status: 'unread'
+            message
         });
 
         await newContact.save();
@@ -71,7 +73,7 @@ export const submitContact = async (req, res) => {
     }
 };
 
-// 📥 Obtener todos los mensajes (admin)
+// 📥 Obtener todos los mensajes (admin) - AÑADE ESTA FUNCIÓN
 export const getContacts = async (req, res) => {
     try {
         const contacts = await Contact.find()
@@ -87,10 +89,17 @@ export const getContacts = async (req, res) => {
     }
 };
 
-// 🗑️ Eliminar mensaje (admin)
+// 🗑️ Eliminar mensaje (admin) - AÑADE ESTA FUNCIÓN
 export const deleteContact = async (req, res) => {
     try {
         const { id } = req.params;
+
+        // Validar que el ID sea válido
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ 
+                message: "ID de mensaje no válido" 
+            });
+        }
 
         const contact = await Contact.findByIdAndDelete(id);
 

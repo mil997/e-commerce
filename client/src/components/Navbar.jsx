@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from '../context/useAuth';
-import { useCart } from '../context/useCart';
+import { useAuth } from '../context/useAuth.jsx';
+import { useCart } from '../context/useCart.jsx';
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);

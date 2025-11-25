@@ -4,9 +4,9 @@ import { addToCart, getCart, removeFromCart, clearCart } from "../controllers/ca
 
 const router = Router();
 
-router.get("/", authRequired, getCart); // hace una peticion de tipo GET para obtener el carrito si esta autorizado
-router.post("/add", authRequired, addToCart); // hace una peticion de tipo POST para agregar al carrito si esta autorizado
-router.delete("/remove/:productId", authRequired, removeFromCart); // hace una peticion de tipo DELETE para eliminar algo del carrito si esta autorizado
-router.delete("/clear", authRequired, clearCart); // hace una peticion de tipo DELETE para vaciar el carrito si esta autorizado
+router.get("/", authRequired, getCart);
+router.post("/add", authRequired, addToCart);
+router.delete("/remove/:productId", authRequired, removeFromCart);
+router.delete("/clear", authRequired, clearCart);
 
 export default router;

@@ -1,74 +1,106 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { AuthContext } from './AuthContext';
+import { AuthContext } from './AuthContext.jsx';
 
-// Proveedor
+const API_URL = 'http://localhost:3000/api';
+
+// Configuración global de axios para cookies
+axios.defaults.withCredentials = true;
+
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          setIsLoading(false);
-          return;
-        }
-
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const response = await axios.get('http://localhost:3000/api/auth/profile');
-        
-        if (response.data) {
-          setIsAuthenticated(true);
-          setUser(response.data);
-        }
-      } catch (error) {
-        // Error 401 es normal - usuario no autenticado
-        if (error.response?.status === 401) {
-          localStorage.removeItem('token');
-          delete axios.defaults.headers.common['Authorization'];
-        }
-      } finally {
-        setIsLoading(false);
+  // Verificar autenticación llamando al endpoint real
+  const checkAuth = useCallback(async () => {
+    try {
+      console.log('🔍 Verificando autenticación...');
+      
+      const response = await axios.get(`${API_URL}/auth/verify`);
+      
+      if (response.data.authenticated) {
+        setIsAuthenticated(true);
+        setUser(response.data.user);
+        console.log('✅ Usuario autenticado:', response.data.user);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+        console.log('❌ Usuario no autenticado');
       }
-    };
-
-    checkLogin();
+    } catch (error) {
+      console.log('❌ Error verificando autenticación:', error.response?.status, error.response?.data);
+      setIsAuthenticated(false);
+      setUser(null);
+      
+      // Si es error 404, el endpoint no existe todavía
+      if (error.response?.status === 404) {
+        console.log('⚠️ Endpoint /auth/verify no existe aún en el backend');
+      }
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const login = async (credentials) => {
-  try {
-    const response = await axios.post('http://localhost:3000/api/auth/login', credentials);
-    const { token, user } = response.data;
-    
-    localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    
-    setIsAuthenticated(true);
-    setUser(user);
-    
-    return response.data;
-  } catch (error) {
-    console.error('Error en login:', error);
-    throw new Error('Error al iniciar sesión: ' + (error.response?.data?.message || error.message));
-  }
-};
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
-    setIsAuthenticated(false);
-    setUser(null);
+  const login = async (credentials) => {
+    try {
+      console.log('🔐 Intentando login...', credentials);
+      
+      // El backend debería establecer la cookie automáticamente
+      // Verificamos la autenticación nuevamente para obtener los datos del usuario
+      await checkAuth();
+      console.log('✅ Login exitoso');
+      return { success: true, user: user };
+    } catch (error) {
+      console.error('❌ Error en login:', error.response?.data);
+      return { 
+        success: false, 
+        error: error.response?.data?.message || 'Error en login' 
+      };
+    }
+  };
+
+  const register = async (userData) => {
+    try {
+      console.log('📝 Intentando registro...', userData);
+      
+      // Verificamos la autenticación nuevamente para obtener los datos del usuario
+      await checkAuth();
+      console.log('✅ Registro exitoso');
+      return { success: true, user: user };
+    } catch (error) {
+      console.error('❌ Error en registro:', error.response?.data);
+      return { 
+        success: false, 
+        error: error.response?.data?.message || 'Error en registro' 
+      };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await axios.post(`${API_URL}/auth/logout`);
+    } catch (error) {
+      console.error('Error en logout:', error);
+    } finally {
+      setUser(null);
+      setIsAuthenticated(false);
+      console.log('🚪 Usuario cerró sesión');
+    }
   };
 
   const value = {
-    isAuthenticated,
     user,
-    isLoading,
+    isAuthenticated,
+    loading,
     login,
-    logout
+    register,
+    logout,
+    checkAuth
   };
 
   return (

@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 // esquema para registro
-export const registerSchema = Joi.object({  // basicamente le digo que datos espero desde el front
+export const registerSchema = Joi.object({
   username: Joi.string().min(3).max(30).required().messages({
     "string.empty": "El nombre de usuario es obligatorio",
     "string.min": "El nombre de usuario debe tener al menos 3 caracteres",
@@ -19,7 +19,7 @@ export const registerSchema = Joi.object({  // basicamente le digo que datos esp
 });
 
 // esquema para login
-export const loginSchema = Joi.object({  // basicamente le digo que datos espero desde el front
+export const loginSchema = Joi.object({
   email: Joi.string().email().required().messages({
     "string.email": "el correo electrónico no es válido",
     "any.required": "el correo electrónico es obligatorio",

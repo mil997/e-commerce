@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { submitContact, getContacts, deleteContact } from "../controllers/contact.controller.js";
 import { authRequired } from "../middlewares/validateToken.js";
-import { validateSchema } from "../middlewares/validator.middleware.js";
+import { validateSchema } from "../middlewares/contact.middlewares.js";
 import { contactSchema } from "../schemas/contact.schema.js";
 import { isAdmin } from "../middlewares/isAdmin.js";
 

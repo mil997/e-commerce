@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useCart } from '../context/useCart';
-import { useAuth } from '../context/useAuth';
+import { useCart } from '../context/useCart.jsx';
+import { useAuth } from '../context/useAuth.jsx';
 import '../styles/CataloguePage.css';
 
 const API_URL = 'http://localhost:3000/api';
