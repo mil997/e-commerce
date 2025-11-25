@@ -1,6 +1,6 @@
 import app from './app.js';
 import { connectDB } from './db.js';
-console.log("TOKEN_SECRET:", process.env.TOKEN_SECRET);
+
 
 
 connectDB();
