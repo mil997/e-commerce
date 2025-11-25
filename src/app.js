@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from "morgan";
 import 'dotenv/config';
 import cors from 'cors';
+import paymentRoutes from "./routes/payment.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import cookieParser from 'cookie-parser'; // para que express lea las cookies
 import productRoutes from "./routes/product.routes.js";
@@ -22,5 +23,9 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/payment", paymentRoutes);
 
 export default app;
+
+
+      // EL APP YO LO USO PARA CONFIGURAR TODO, EL CODIGO DE EXPRESS DEL BACKEND.

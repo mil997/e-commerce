@@ -8,3 +8,5 @@ try {
     console.log('error en la base de datos', error.message);
 }
 };
+
+                 // ES LA CONECTION A LA BASE DE DATOS
