@@ -22,9 +22,11 @@ function HomePage() {
           console.warn("La API no devolvio un array. Datos recibidos:", data);
         }
 
-        setProducts(productArray);
+        const featuredProducts = productArray
+        .sort(() => Math.random() - 0.5) // Mezclar array
+        .slice(0, 6); // Tomar 6 aleatorios
+        setProducts(featuredProducts);
         setLoading(false);
-
       } catch (err) {
         console.error("Error al cargar productos:", err);
         setError("Error al obtener los datos de productos. Por favor, intenta más tarde.");
@@ -32,7 +34,7 @@ function HomePage() {
       }
     }
     loadProducts();
-    }, []);
+  }, []);
 
   if (loading) {
     return <h2>Cargando productos...</h2>;

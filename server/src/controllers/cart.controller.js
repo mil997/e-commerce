@@ -1,13 +1,27 @@
 import Cart from "../models/cart.model.js";
 import Product from "../models/product.model.js";
 
+// Función auxiliar para populate consistente
+const populateCart = (cart) => {
+  return cart.populate({
+    path: 'items.product',
+    select: 'name description price image stock'
+  });
+};
+
+
 // obtener carrito del usuario
 export const getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ user: req.user.id }).populate("items.product");
-    if (!cart) return res.json({ items: [], total: 0 });
-    res.json(cart);
+    let cart = await Cart.findOne({ user: req.user.id });
+    if (!cart) {
+      cart = new Cart({ user: req.user.id, items: [], total: 0 });
+      await cart.save();
+    }
+    const populatedCart = await populateCart(cart);
+    res.json(populatedCart);
   } catch (error) {
+    console.error("Error en getCart:", error);
     res.status(500).json({ message: "error al obtener el carrito", error });
   }
 };
@@ -37,7 +51,8 @@ export const addToCart = async (req, res) => {
     cart.total = await calculateTotal(cart.items);
     await cart.save();
 
-    res.json(cart);
+    const populatedCart = await populateCart(cart);
+    res.json(populatedCart);
   } catch (error) {
     res.status(500).json({ message: "error al agregar al carrito", error });
   }
@@ -55,7 +70,8 @@ export const removeFromCart = async (req, res) => {
     cart.total = await calculateTotal(cart.items);
     await cart.save();
 
-    res.json(cart);
+    const populatedCart = await populateCart(cart);
+    res.json(populatedCart);
   } catch (error) {
     res.status(500).json({ message: "error al eliminar producto", error });
   }
@@ -71,7 +87,8 @@ export const clearCart = async (req, res) => {
     cart.total = 0;
     await cart.save();
 
-    res.json({ message: "carrito vaciado correctamente" });
+    const populatedCart = await populateCart(cart);
+    res.json(populatedCart);
   } catch (error) {
     res.status(500).json({ message: "error al vaciar el carrito", error });
   }

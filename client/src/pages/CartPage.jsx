@@ -116,6 +116,7 @@ function CartPage() {
                             <button 
                               className="btn btn-outline-danger btn-sm"
                               onClick={() => handleRemoveItem(item.product._id)}
+                              disabled={!item.product}
                             >
                               Eliminar
                             </button>
