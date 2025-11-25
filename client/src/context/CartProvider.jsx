@@ -5,7 +5,14 @@ import { CartContext } from './CartContext.jsx'; // <-- Nueva importación
 
 const API_URL = 'http://localhost:3000/api'; 
 // export const CartContext = createContext(); // <-- ELIMINADO
+axios.defaults.withCredentials = true;
 
+  axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  });
+  
 export const CartProvider = ({ children }) => {
     const { isAuthenticated, loading: authLoading } = useAuth();
     const [cart, setCart] = useState({ items: [], total: 0 });
@@ -39,7 +46,8 @@ export const CartProvider = ({ children }) => {
         if (!isAuthenticated) return alert("Debes iniciar sesión para añadir productos.");
         
         try {
-            const res = await axios.post(`${API_URL}/cart`, { productId, quantity });
+            const res = await axios.post(`${API_URL}/cart/add`, { productId, quantity });
+            console.log("Carrito después de añadir:", res.data);
             setCart(res.data); 
         } catch (error) {
             console.error("Error al añadir producto:", error);
@@ -51,10 +59,12 @@ export const CartProvider = ({ children }) => {
         if (!isAuthenticated) return;
         
         try {
-            const res = await axios.delete(`${API_URL}/cart/${productId}`);
+            const res = await axios.delete(`${API_URL}/cart/remove/${productId}`);
+            console.log("Carrito después de eliminar:", res.data);
             setCart(res.data); 
         } catch (error) {
             console.error("Error al eliminar producto:", error);
+            alert("Error: " + (error.response?.data?.message || "No se pudo eliminar el producto"));
         }
     };
     
