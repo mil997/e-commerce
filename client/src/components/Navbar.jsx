@@ -28,6 +28,11 @@ function Navbar() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     console.log("Buscar:", searchQuery);
+    if (searchQuery.trim()) {
+    navigate(`/catalogue?search=${encodeURIComponent(searchQuery)}`);
+  } else {
+    navigate('/catalogue');
+  }
     setSearchQuery('');
     setSearchVisible(false);
   }

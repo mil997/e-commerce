@@ -28,7 +28,7 @@ function CartPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="container mt-5 text-center">
+      <div className="container text-center cart-container-fix">
         <h2 className="text-danger mb-4">Acceso Requerido</h2>
         <p className="text-muted mb-4">Debes iniciar sesión para ver tu carrito.</p>
         <Link to="/login" className="btn btn-primary me-2">Iniciar Sesión</Link>
@@ -39,7 +39,7 @@ function CartPage() {
 
   if (cart.items.length === 0) {
     return (
-      <div className="container mt-5 text-center">
+      <div className="container text-center cart-container-fix">
         <h2 className="text-secondary mb-4">Carrito Vacío</h2>
         <p className="text-muted mb-4">Tu carrito está vacío. ¡Añade algunos productos!</p>
         <Link to="/catalogue" className="btn btn-primary">Explorar Catálogo</Link>
