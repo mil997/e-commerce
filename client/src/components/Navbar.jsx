@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/useAuth';
+import { useCart } from '../context/useCart';
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const { isAuthenticated, logout } = useAuth();
+  const { cart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +31,12 @@ function Navbar() {
     setSearchQuery('');
     setSearchVisible(false);
   }
+    const handleLogout = () => {
+    logout();
+    navigate('/');
+  }
+  //calcula el total de items del carrito
+  const totalItemCount = cart.items.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <nav className={`navbar navbar-expand-lg navbar-dark fixed-top ${scrolled ? 'navbar-scrolled' : 'navbar-transparent'}`}>
@@ -57,7 +68,9 @@ function Navbar() {
             <li className="nav-item">
               <Link className="nav-link" to="/catalogue">Catálogo</Link>
             </li>
-
+            {/* Usuario NO autenticado */}
+            {!isAuthenticated ? (
+            <>
             {/* Registro y LogIn */}
             <li className="nav-item">
               <Link className="nav-link" to="/register">Registrarse</Link>
@@ -65,7 +78,18 @@ function Navbar() {
             <li className="nav-item">
               <Link className="nav-link" to="/login">Login</Link>
             </li>
-            
+            </>
+            ) : (
+            /* Usuario autenticado */
+         <li className='nav-item'>
+              <button
+                className="nav-link btn-logout"
+                onClick={handleLogout}
+              >
+                Cerrar sesión
+              </button>
+         </li>
+            )}
             {/* Barra de búsqueda*/}
             <li className="nav-item search-container">
               {searchVisible ? (
@@ -110,12 +134,14 @@ function Navbar() {
                   alt="Carrito de compras"
                   className="shopping-bag-image"
                 />
-                <span className="shopping-bag-count">0</span>
+                <span className="shopping-bag-count">{totalItemCount}</span>
               </Link>
             </li>
+            {/* Contacto */}
             <li className="nav-item">
               <Link className="nav-link" to="/contact">Contacto</Link>
             </li>
+            
           </ul>
         </div>
       </div>
